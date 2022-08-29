@@ -3,7 +3,7 @@ import styled from 'styled-components';
 interface Props {
   width?: string;
   height?: string;
-  display?: 'flex' | 'block';
+  display?: 'flex' | 'block' | 'none';
   flexDirection?: string;
   alignItems?: 'flex-start' | 'flex-end' | 'center';
   justifyContent?: 'flex-start' | 'flex-end' | 'center';
