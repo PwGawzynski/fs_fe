@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { ICreateUserAsk, UniversalResponseObject } from 'types';
+import { ICreateUserAsk, LoginUserAsk, UniversalResponseObject } from 'types';
 
 export class Api {
   // axios main class instance
@@ -46,6 +46,20 @@ export class Api {
       ).data as UniversalResponseObject;
     } catch (e) {
       // in case of bad data given or server failure it convert error to  URO( UniversalResponseObject )
+      return Api.validateError(e);
+    }
+  }
+
+  static async sendLoginAsk(
+    data: LoginUserAsk,
+  ): Promise<UniversalResponseObject> {
+    try {
+      return (
+        await Api.axiosInstance.post('/auth/login', data, {
+          headers: { 'Content-Type': 'application/json' },
+        })
+      ).data as UniversalResponseObject;
+    } catch (e) {
       return Api.validateError(e);
     }
   }
