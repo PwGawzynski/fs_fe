@@ -5,7 +5,8 @@ export class Api {
   // axios main class instance
   static axiosInstance = axios.create({
     baseURL: 'http://localhost:3001',
-    timeout: 1000,
+    timeout: 5000,
+    withCredentials: true,
   });
 
   // helper method for check error type and return user friendly UniversalResponseObject
@@ -59,6 +60,15 @@ export class Api {
           headers: { 'Content-Type': 'application/json' },
         })
       ).data as UniversalResponseObject;
+    } catch (e) {
+      return Api.validateError(e);
+    }
+  }
+
+  static async sendTest(): Promise<UniversalResponseObject> {
+    try {
+      return (await Api.axiosInstance.get('users/test'))
+        .data as UniversalResponseObject;
     } catch (e) {
       return Api.validateError(e);
     }
