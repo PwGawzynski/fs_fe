@@ -65,12 +65,11 @@ export class Api {
     }
   }
 
-  static async sendTest(): Promise<UniversalResponseObject> {
-    try {
-      return (await Api.axiosInstance.get('users/test'))
-        .data as UniversalResponseObject;
-    } catch (e) {
-      return Api.validateError(e);
-    }
+  static async getUserProfilePicture(): Promise<Blob> {
+    return (
+      await Api.axiosInstance.get('/users/profile/photo', {
+        responseType: 'blob',
+      })
+    ).data as Blob;
   }
 }
