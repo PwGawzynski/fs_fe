@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { StyledDivContainer } from '../Atoms/StyledDivContainer';
 import { Api } from '../../Utils/Api/Api';
 import { ProfilePicture } from '../Molecules/ProfilePicture';
+import { TopBarContainer } from '../Atoms/TopBarContainer';
 
 export const TopBar = () => {
   const [profile, setProfile] = useState('');
@@ -13,13 +13,8 @@ export const TopBar = () => {
     })();
   }, []);
   return (
-    <StyledDivContainer
-      height="5vh"
-      flexDirection="row"
-      justifyContent="flex-start"
-      margin="2vh 0 0 2vh"
-    >
+    <TopBarContainer>
       <ProfilePicture link={profile} />
-    </StyledDivContainer>
+    </TopBarContainer>
   );
 };
