@@ -5,7 +5,8 @@ export class Api {
   // axios main class instance
   static axiosInstance = axios.create({
     baseURL: 'http://localhost:3001',
-    timeout: 1000,
+    timeout: 5000,
+    withCredentials: true,
   });
 
   // helper method for check error type and return user friendly UniversalResponseObject
@@ -62,5 +63,13 @@ export class Api {
     } catch (e) {
       return Api.validateError(e);
     }
+  }
+
+  static async getUserProfilePicture(): Promise<Blob> {
+    return (
+      await Api.axiosInstance.get('/users/profile/photo', {
+        responseType: 'blob',
+      })
+    ).data as Blob;
   }
 }
