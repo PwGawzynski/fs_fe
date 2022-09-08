@@ -7,6 +7,7 @@ import {
   NotificationsContext,
   NotificationsContextI,
 } from '../ContextFactories/NotificationsContext';
+import { Login } from '../AtomicComponents/Pages/Login';
 
 export const App = () => {
   const [notification, setNotification] = useState({
@@ -24,8 +25,9 @@ export const App = () => {
     <BrowserRouter>
       <NotificationsContext.Provider value={notificationMemo}>
         <Routes>
-          <Route path="/" element={<Desktop />} />
+          <Route path="/desktop" element={<Desktop />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
         <Notification
           display={notification.display}

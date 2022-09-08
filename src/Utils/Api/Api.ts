@@ -1,11 +1,12 @@
 import axios, { AxiosError } from 'axios';
-import { ICreateUserAsk, UniversalResponseObject } from 'types';
+import { ICreateUserAsk, LoginUserAsk, UniversalResponseObject } from 'types';
 
 export class Api {
   // axios main class instance
   static axiosInstance = axios.create({
     baseURL: 'http://localhost:3001',
-    timeout: 1000,
+    timeout: 5000,
+    withCredentials: true,
   });
 
   // helper method for check error type and return user friendly UniversalResponseObject
@@ -48,5 +49,27 @@ export class Api {
       // in case of bad data given or server failure it convert error to  URO( UniversalResponseObject )
       return Api.validateError(e);
     }
+  }
+
+  static async sendLoginAsk(
+    data: LoginUserAsk,
+  ): Promise<UniversalResponseObject> {
+    try {
+      return (
+        await Api.axiosInstance.post('/auth/login', data, {
+          headers: { 'Content-Type': 'application/json' },
+        })
+      ).data as UniversalResponseObject;
+    } catch (e) {
+      return Api.validateError(e);
+    }
+  }
+
+  static async getUserProfilePicture(): Promise<Blob> {
+    return (
+      await Api.axiosInstance.get('/users/profile/photo', {
+        responseType: 'blob',
+      })
+    ).data as Blob;
   }
 }

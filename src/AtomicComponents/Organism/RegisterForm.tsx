@@ -1,5 +1,6 @@
 import React, { FormEvent, useContext, useState } from 'react';
 import { ICreateUserAsk } from 'types';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { FormTemplate } from '../Atoms/FormTemplate';
 import { ReusableInput } from '../Molecules/ReusableInput';
 import { FormLabel } from '../Atoms/FormLabel';
@@ -14,25 +15,39 @@ const onSubmitHandler = async (
   e: FormEvent<HTMLFormElement>,
   data: ICreateUserAsk,
   setNotification: React.Dispatch<React.SetStateAction<NotificationsContextI>>,
+  nav: NavigateFunction,
 ) => {
   e.preventDefault();
   const res = await Api.sendRegisterAsk(data);
 
   // TODO refactor this code to be hidden in helper Fn
   if (!res.status) {
-    setNotification(() => {
-      return res.message
+    setNotification(
+      res.message
         ? {
             display: true,
             message:
               typeof res.message !== 'string' ? res.message[0] : res.message,
           }
-        : { display: false, message: '' };
-    });
+        : { display: false, message: '' },
+    );
+  } else if (res.status) {
+    setNotification(
+      res.message
+        ? {
+            display: true,
+            message:
+              typeof res.message !== 'string' ? res.message[0] : res.message,
+          }
+        : { display: false, message: '' },
+    );
+    nav('/desktop');
   }
 };
 
 export const RegisterForm = () => {
+  const nav = useNavigate();
+
   const { setNotification } = useContext(NotificationsContext);
   // object with stores all fields values for form
   const [data, setData] = useState({
@@ -46,7 +61,7 @@ export const RegisterForm = () => {
 
   return (
     <FormTemplate
-      onSubmit={(event) => onSubmitHandler(event, data, setNotification)}
+      onSubmit={(event) => onSubmitHandler(event, data, setNotification, nav)}
     >
       <FormLabel>Login</FormLabel>
       <ReusableInput
