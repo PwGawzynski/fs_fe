@@ -1,15 +1,5 @@
-import styled from 'styled-components';
-import { StyledDivContainer } from '../Atoms/StyledDivContainer';
 import { HamburgerSlice } from '../Atoms/HamburgerSlice';
-
-const SlicesContainer = styled(StyledDivContainer)`
-  padding-top: 8px;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 10%;
-  height: 5vh;
-  box-sizing: border-box;
-`;
+import { SlicesContainer } from '../Atoms/SlicesContainer';
 
 interface Props {
   display: 'block' | 'none';
