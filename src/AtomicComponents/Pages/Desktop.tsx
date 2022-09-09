@@ -3,8 +3,9 @@ import { TopBar } from '../Organism/TopBar';
 
 export const Desktop = () => {
   return (
-    <StyledDivContainer>
+    <StyledDivContainer flexDirection="column">
       <TopBar />
+      <StyledDivContainer height="900vh" />
     </StyledDivContainer>
   );
 };
