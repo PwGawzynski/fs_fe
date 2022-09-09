@@ -1,8 +1,14 @@
 import styled from 'styled-components';
 
-export const hamburgerSlice = styled.hr`
+interface Props {
+  display: 'block' | 'none';
+}
+
+export const HamburgerSlice = styled.div`
   width: 100%;
-  height: 10%;
-  margin-bottom: auto;
-  margin-top: auto;
+  min-height: 0.45vh;
+  margin-bottom: 20%;
+  background-color: #013237;
+  border-radius: 10px;
+  display: ${(props: Props) => props.display};
 `;

@@ -1,9 +1,26 @@
+import styled from 'styled-components';
+import { StyledDivContainer } from '../Atoms/StyledDivContainer';
+import { HamburgerSlice } from '../Atoms/HamburgerSlice';
+
+const SlicesContainer = styled(StyledDivContainer)`
+  padding-top: 8px;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 10%;
+  height: 5vh;
+  box-sizing: border-box;
+`;
+
 interface Props {
-  // eslint-disable-next-line react/no-unused-prop-types
-  isOn: boolean;
+  display: 'block' | 'none';
 }
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const HamburgerMenu = (props: Props) => {
-  // eslint-disable-next-line react/jsx-no-useless-fragment
-  return <></>;
+  const { display } = props;
+  return (
+    <SlicesContainer>
+      <HamburgerSlice display={display} />
+      <HamburgerSlice display={display} />
+      <HamburgerSlice display={display} />
+    </SlicesContainer>
+  );
 };
