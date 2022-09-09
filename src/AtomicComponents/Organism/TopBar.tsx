@@ -3,7 +3,7 @@ import { Api } from '../../Utils/Api/Api';
 import { ProfilePicture } from '../Molecules/ProfilePicture';
 import { TopBarContainer } from '../Atoms/TopBarContainer';
 import { HamburgerMenu } from '../Molecules/HamburgerMenu';
-import { StyledDivContainer } from '../Atoms/StyledDivContainer';
+import { InsideTopBarContainer } from '../Atoms/InsideTopBarContainer';
 
 const handleClickOnHamburger = (
   setMenu: React.Dispatch<React.SetStateAction<'block' | 'none'>>,
@@ -24,18 +24,18 @@ export const TopBar = () => {
   }, []);
 
   return (
-    <TopBarContainer onClick={() => handleClickOnHamburger(setMenuOn)}>
-      <StyledDivContainer width="20%">
+    <TopBarContainer
+      menuOn={menuOn === 'none'}
+      onClick={() => handleClickOnHamburger(setMenuOn)}
+      height="auto"
+    >
+      <InsideTopBarContainer width="20%">
         <ProfilePicture link={profile} />
-      </StyledDivContainer>
+      </InsideTopBarContainer>
 
-      <StyledDivContainer
-        width="80%"
-        justifyContent="flex-end"
-        alignItems="center"
-      >
+      <InsideTopBarContainer width="80%" justifyContent="flex-end">
         <HamburgerMenu display={menuOn} />
-      </StyledDivContainer>
+      </InsideTopBarContainer>
     </TopBarContainer>
   );
 };
