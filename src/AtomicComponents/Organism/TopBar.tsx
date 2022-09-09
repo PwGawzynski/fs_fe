@@ -29,12 +29,14 @@ export const TopBar = () => {
       onClick={() => handleClickOnHamburger(setMenuOn)}
       height="auto"
     >
-      <InsideTopBarContainer width="20%">
-        <ProfilePicture link={profile} />
-      </InsideTopBarContainer>
+      <InsideTopBarContainer width="100%">
+        <InsideTopBarContainer width="20%">
+          <ProfilePicture link={profile} />
+        </InsideTopBarContainer>
 
-      <InsideTopBarContainer width="80%" justifyContent="flex-end">
-        <HamburgerMenu display={menuOn} />
+        <InsideTopBarContainer width="80%" justifyContent="flex-end">
+          <HamburgerMenu display={menuOn} />
+        </InsideTopBarContainer>
       </InsideTopBarContainer>
     </TopBarContainer>
   );
