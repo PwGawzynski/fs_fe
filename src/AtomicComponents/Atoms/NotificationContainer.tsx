@@ -12,4 +12,5 @@ export const NotificationContainer = styled(StyledDivContainer)`
   border: 2px solid black;
   font-size: 1em;
   background-color: white;
+  z-index: 200;
 `;
