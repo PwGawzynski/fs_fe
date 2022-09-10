@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { TopBarContainer } from '../Atoms/TopBarContainer';
+import { TopBarContainer, TopBarHidden } from '../Atoms/TopBarContainer';
 import { RolledTopBarContent } from '../Atoms/RolledTopBarContent';
 import { ProfilePhoto } from './ProfilePhoto';
 import { Hamburger } from './Hamburger';
+import { LogOutButton } from './LogOutButton';
 
 export const TopBar = () => {
   const [menuOn, setMenuOn] = useState('block' as 'block' | 'none');
@@ -13,6 +14,9 @@ export const TopBar = () => {
         <ProfilePhoto />
         <Hamburger menuOn={menuOn} setMenuOn={setMenuOn} />
       </RolledTopBarContent>
+      <TopBarHidden display={menuOn}>
+        <LogOutButton />
+      </TopBarHidden>
     </TopBarContainer>
   );
 };

@@ -21,3 +21,13 @@ export const TopBarContainer = styled(StyledDivContainer)`
   z-index: 100;
   overflow: hidden;
 `;
+
+interface ITopBarHidden {
+  display: 'block' | 'none';
+}
+
+export const TopBarHidden = styled(StyledDivContainer)`
+  display: ${(props: ITopBarHidden) =>
+    props.display === 'none' ? 'flex' : 'none'};
+  align-items: flex-end;
+`;
