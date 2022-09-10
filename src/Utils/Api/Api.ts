@@ -61,15 +61,31 @@ export class Api {
         })
       ).data as UniversalResponseObject;
     } catch (e) {
+      // in case of bad data given or server failure it convert error to  URO( UniversalResponseObject )
       return Api.validateError(e);
     }
   }
 
+  // TODO add err handling
   static async getUserProfilePicture(): Promise<Blob> {
     return (
       await Api.axiosInstance.get('/users/profile/photo', {
         responseType: 'blob',
       })
     ).data as Blob;
+  }
+
+  // sends logOut ask for given in cookies jwt
+  static async sendLogOutAsk(): Promise<UniversalResponseObject> {
+    try {
+      return (
+        await Api.axiosInstance.get('/auth/logout', {
+          withCredentials: true,
+        })
+      ).data as UniversalResponseObject;
+    } catch (e) {
+      // in case of bad data given or server  failure it convert error to  URO( UniversalResponseObject )
+      return Api.validateError(e);
+    }
   }
 }
