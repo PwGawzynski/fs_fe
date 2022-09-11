@@ -13,4 +13,5 @@ export const NotificationCurtain = styled(StyledDivContainer)`
   top: 0;
   left: 0;
   display: ${(props: Props) => props.display};
+  z-index: 300;
 `;
