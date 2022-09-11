@@ -1,9 +1,18 @@
+import React from 'react';
+import { HamburgerSlice } from '../Atoms/HamburgerSlice';
+import { SlicesContainer } from '../Atoms/SlicesContainer';
+
 interface Props {
-  // eslint-disable-next-line react/no-unused-prop-types
-  isOn: boolean;
+  display: 'block' | 'none';
+  onClick: () => void;
 }
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const HamburgerMenu = (props: Props) => {
-  // eslint-disable-next-line react/jsx-no-useless-fragment
-  return <></>;
+  const { display, onClick } = props;
+  return (
+    <SlicesContainer onClick={onClick}>
+      <HamburgerSlice display={display} />
+      <HamburgerSlice display={display} />
+      <HamburgerSlice display={display} />
+    </SlicesContainer>
+  );
 };
