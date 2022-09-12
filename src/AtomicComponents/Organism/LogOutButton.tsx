@@ -6,16 +6,19 @@ import {
   NotificationContextObj,
   NotificationsContext,
 } from '../../ContextFactories/NotificationsContext';
+import { useAuth } from '../../Utils/Hooks/authHook';
 
 const handleOnClick = async (
   notification: NotificationContextObj,
   nav: NavigateFunction,
+  setLogoutInLS: () => void,
 ) => {
   if ((await Api.sendLogOutAsk()).status) {
     notification.setNotification({
       display: true,
       message: 'You are lodged out correctly!',
     });
+    setLogoutInLS();
     nav('/login');
     return;
   }
@@ -28,8 +31,12 @@ const handleOnClick = async (
 export const LogOutButton = () => {
   const notification = useContext(NotificationsContext);
   const nav = useNavigate();
+  const { setLogoutILS } = useAuth();
   return (
-    <Button onClick={() => handleOnClick(notification, nav)} margin="5% 0 5% 0">
+    <Button
+      onClick={() => handleOnClick(notification, nav, setLogoutILS)}
+      margin="5% 0 5% 0"
+    >
       Log Out
     </Button>
   );

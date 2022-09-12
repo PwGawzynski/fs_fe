@@ -10,17 +10,20 @@ import {
   NotificationsContext,
 } from '../../ContextFactories/NotificationsContext';
 import { Api } from '../../Utils/Api/Api';
+import { useAuth } from '../../Utils/Hooks/authHook';
 
 const handleOnSubmit = async (
   e: FormEvent<HTMLFormElement>,
   notification: NotificationContextObj,
   data: LoginUserAsk,
   nav: NavigateFunction,
+  setLoginILS: (data: boolean) => Promise<void>,
 ) => {
   e.preventDefault();
   const res = await Api.sendLoginAsk(data);
   if (res && res.status) {
-    nav('/desktop');
+    await setLoginILS(true);
+    nav('/protected/desktop');
   } else {
     notification.setNotification({
       display: true,
@@ -37,9 +40,13 @@ export const LoginForm = () => {
   const notification = useContext(NotificationsContext);
   const nav = useNavigate();
 
+  const { setLoginInLS } = useAuth();
+
   return (
     <FormTemplate
-      onSubmit={(e) => handleOnSubmit(e, notification, formData, nav)}
+      onSubmit={(e) =>
+        handleOnSubmit(e, notification, formData, nav, setLoginInLS)
+      }
     >
       <FormLabel>Login</FormLabel>
       <ReusableInput
