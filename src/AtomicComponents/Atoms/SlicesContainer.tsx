@@ -5,7 +5,7 @@ export const SlicesContainer = styled(StyledDivContainer)`
   flex-direction: column;
   margin: 0 10% 0 0;
   justify-content: center;
-  width: 10%;
+  width: 100%;
   height: 5vh;
   box-sizing: border-box;
   align-items: center;
