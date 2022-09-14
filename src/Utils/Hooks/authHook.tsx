@@ -1,10 +1,11 @@
 import React, { createContext, useCallback, useContext, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UserRolesObj } from 'types';
 import { useLocalStorage } from './localStoreHook';
 
 interface ContextInterface {
   user: any;
-  setLoginInLS: (data: boolean) => Promise<void>;
+  setLoginInLS: (data: UserRolesObj) => Promise<void>;
   setLogoutILS: () => void;
 }
 
@@ -19,7 +20,7 @@ export const AuthProvider = ({ children }: Pros) => {
 
   // call this function when you want to authenticate the user
   const setLoginInLS = useCallback(
-    async (data: boolean) => {
+    async (data: UserRolesObj) => {
       setUser(data);
       navigate('/profile');
     },

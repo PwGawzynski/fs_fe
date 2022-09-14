@@ -1,4 +1,4 @@
-import { LoginUserAsk } from 'types';
+import { LoginUserAsk, UserRolesObj } from 'types';
 import { FormEvent, useContext, useState } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { FormTemplate } from '../Atoms/FormTemplate';
@@ -17,12 +17,12 @@ const handleOnSubmit = async (
   notification: NotificationContextObj,
   data: LoginUserAsk,
   nav: NavigateFunction,
-  setLoginILS: (data: boolean) => Promise<void>,
+  setLoginILS: (data: UserRolesObj) => Promise<void>,
 ) => {
   e.preventDefault();
   const res = await Api.sendLoginAsk(data);
   if (res && res.status) {
-    await setLoginILS(true);
+    await setLoginILS(res.data as UserRolesObj);
     nav('/protected/desktop');
   } else {
     notification.setNotification({
