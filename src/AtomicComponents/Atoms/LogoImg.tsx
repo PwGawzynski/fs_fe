@@ -1,5 +1,5 @@
 import { Img } from './Imge';
-import LogoImgResource from '../../assets/images/logo.png';
+import LogoImgResource from '../../assets/images/logo.webp';
 
 interface Prps {
   width: string;
