@@ -3,12 +3,6 @@ import React from 'react';
 import { Img } from './Imge';
 import Resource from '../../assets/images/DesktopBG.webp';
 
-interface Props {
-  children: React.ReactNode;
-  takenColumnCount: number;
-  oneColumnSizeInVw: number;
-}
-
 const BgContainer = styled.div`
   width: 100%;
   height: auto;
@@ -17,10 +11,15 @@ const BgContainer = styled.div`
   overflow-x: hidden;
   display: flex;
   justify-content: center;
+  @media (max-width: 500px) {
+    height: 30vh;
+    position: absolute;
+    top: 7vh;
+  } ;
 `;
 
 const ImgBg = styled(Img)`
-  filter: blur(4px);
+  filter: blur(8px);
 `;
 
 const TextContainer = styled.div`
@@ -39,19 +38,12 @@ const HelloText = styled.p`
   font-weight: bold;
   color: #53ec8e;
   font-family: Roboto;
-  font-size: ${(props: Props) => {
-    const textLength = props?.children?.toString().trim().length;
-    if (textLength && textLength > 0) {
-      return `${
-        (props.takenColumnCount * props.oneColumnSizeInVw) / textLength + 2
-      }vw`;
-    }
-    return '1vw';
-  }};
+  font-size: 6vw;
+
   @media (max-width: 500px) {
     align-self: center;
     grid-column-start: 2;
-    grid-column-end: 9;
+    grid-column-end: 11;
     grid-row-start: 4;
     grid-row-end: 5;
   }
@@ -60,7 +52,7 @@ const HelloText = styled.p`
 const MottoText = styled(HelloText)`
   @media (max-width: 500px) {
     justify-self: center;
-    align-self: center;
+    align-self: self-start;
     grid-column-start: 2;
     grid-column-end: 10;
     grid-row-start: 5;
@@ -74,12 +66,8 @@ export const DesktopBg = () => {
     <BgContainer>
       <ImgBg width="110%" src={Resource} margin="0" />
       <TextContainer>
-        <HelloText takenColumnCount={6} oneColumnSizeInVw={10}>
-          WELCOME John al ali :)
-        </HelloText>
-        <MottoText takenColumnCount={8} oneColumnSizeInVw={10}>
-          LET’S START OUR WORK
-        </MottoText>
+        <HelloText>WELCOME JOHN :)</HelloText>
+        <MottoText>LET’S START OUR WORK</MottoText>
       </TextContainer>
     </BgContainer>
   );
