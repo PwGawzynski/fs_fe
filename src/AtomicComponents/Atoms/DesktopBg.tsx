@@ -8,7 +8,7 @@ const BgContainer = styled.div`
   height: auto;
   position: relative;
   top: -2vh;
-  overflow-x: hidden;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   @media (max-width: 500px) {
@@ -20,6 +20,7 @@ const BgContainer = styled.div`
 
 const ImgBg = styled(Img)`
   filter: blur(8px);
+  width: 500px;
 `;
 
 const TextContainer = styled.div`
@@ -64,7 +65,7 @@ const MottoText = styled(HelloText)`
 export const DesktopBg = () => {
   return (
     <BgContainer>
-      <ImgBg width="110%" src={Resource} margin="0" />
+      <ImgBg width="120vw" src={Resource} margin="0" />
       <TextContainer>
         <HelloText>WELCOME JOHN :)</HelloText>
         <MottoText>LET’S START OUR WORK</MottoText>
