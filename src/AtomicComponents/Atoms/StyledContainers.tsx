@@ -39,3 +39,13 @@ export const ControlCenter = styled(StatisticsContainer)`
   grid-row-start: 8;
   grid-row-end: 13;
 `;
+
+export const StatisticTextContainer = styled.div`
+  grid-column: 8 / 20;
+  grid-row: 4 / 20;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+`;
