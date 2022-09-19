@@ -45,7 +45,7 @@ export const StatisticTextContainer = styled.div`
   grid-row: 4 / 20;
   background-color: white;
   border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(10, 10%);
+  grid-template-rows: repeat(10, 10%);
 `;
