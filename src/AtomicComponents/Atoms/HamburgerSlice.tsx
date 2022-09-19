@@ -5,7 +5,7 @@ interface Props {
 }
 
 export const HamburgerSlice = styled.div`
-  width: 100%;
+  width: 50%;
   min-height: 0.48vh;
   background-color: #013237;
   border-radius: 10px;
@@ -15,7 +15,7 @@ export const HamburgerSlice = styled.div`
   transform: ${(props: Props) =>
     props.display === 'none' ? 'translateY(50%) rotate(45deg)' : 'none'};
   &:nth-child(2) {
-    margin: 15% 0;
+    margin: 10% 0;
     display: ${(props: Props) => props.display};
   }
   &:nth-child(3) {

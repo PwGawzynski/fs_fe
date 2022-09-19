@@ -16,7 +16,7 @@ const handleClickOnHamburger = (
 export const Hamburger = (props: Props) => {
   const { menuOn, setMenuOn } = props;
   return (
-    <RolledTopBarContent width="80%" justifyContent="flex-end">
+    <RolledTopBarContent width="20%" justifyContent="flex-end">
       <HamburgerMenu
         display={menuOn}
         onClick={() => handleClickOnHamburger(setMenuOn)}

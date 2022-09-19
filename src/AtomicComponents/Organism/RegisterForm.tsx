@@ -41,7 +41,7 @@ const onSubmitHandler = async (
           }
         : { display: false, message: '' },
     );
-    nav('/desktop');
+    nav('/protected/desktop');
   }
 };
 
