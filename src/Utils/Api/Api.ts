@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ICreateUserAsk, LoginUserAsk, UniversalResponseObject } from 'types';
 
 export class Api {
@@ -63,6 +63,17 @@ export class Api {
     } catch (e) {
       // in case of bad data given or server failure it convert error to  URO( UniversalResponseObject )
       return Api.validateError(e);
+    }
+  }
+
+  static async checkSession(): Promise<boolean> {
+    try {
+      const res = (await Api.axiosInstance.get(
+        '/auth/check-session',
+      )) as AxiosResponse;
+      return res.status === 200;
+    } catch (e) {
+      return false;
     }
   }
 

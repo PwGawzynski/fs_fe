@@ -1,18 +1,34 @@
-import { Navigate, Outlet } from 'react-router-dom';
-import { useContext } from 'react';
+import { NavigateFunction, Outlet, useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import {
+  NotificationContextObj,
+  NotificationsContext,
+} from '../../ContextFactories/NotificationsContext';
+import { Api } from '../../Utils/Api/Api';
 import { useAuth } from '../../Utils/Hooks/authHook';
-import { NotificationsContext } from '../../ContextFactories/NotificationsContext';
 
-export const ProtectedResources = () => {
-  const { user } = useAuth();
-  const notificationContext = useContext(NotificationsContext);
-  if (!user) {
+const handleSession = async (
+  notificationContext: NotificationContextObj,
+  setSession: React.Dispatch<React.SetStateAction<boolean>>,
+  nav: NavigateFunction,
+  user: any,
+) => {
+  if (!((await Api.checkSession()) && user)) {
     notificationContext.setNotification({
       display: true,
-      message:
-        'You are not authorised for this action, please log in and try again',
+      message: 'Your session expired, please login again',
     });
-    return <Navigate to="/login" />;
-  }
-  return <Outlet />;
+    nav('./../login');
+  } else setSession(true);
+};
+
+export const ProtectedResources = () => {
+  const notificationContext = useContext(NotificationsContext);
+  const [session, setSession] = useState(false);
+  const nav = useNavigate();
+  const { user } = useAuth();
+  useEffect(() => {
+    (async () => handleSession(notificationContext, setSession, nav, user))();
+  }, [session, notificationContext, nav, user]);
+  return session ? <Outlet /> : <div />;
 };
