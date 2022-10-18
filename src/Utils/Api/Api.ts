@@ -1,5 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { ICreateUserAsk, LoginUserAsk, UniversalResponseObject } from 'types';
+import {
+  DailyTaskStats,
+  ICreateUserAsk,
+  LoginUserAsk,
+  UniversalResponseObject,
+} from 'types';
 
 export class Api {
   // axios main class instance
@@ -74,6 +79,28 @@ export class Api {
       return res.status === 200;
     } catch (e) {
       return false;
+    }
+  }
+
+  static async getDailyWorkerStats(): Promise<DailyTaskStats | undefined> {
+    try {
+      const res = (await Api.axiosInstance.get(
+        '/statistic/worker/daily-done-task',
+      )) as AxiosResponse;
+      return (res.data as UniversalResponseObject).data as DailyTaskStats;
+    } catch (e) {
+      return undefined;
+    }
+  }
+
+  static async getAllTaskWorkerStats(): Promise<DailyTaskStats | undefined> {
+    try {
+      const res = (await Api.axiosInstance.get(
+        '/statistic/worker/all-done-task',
+      )) as AxiosResponse;
+      return (res.data as UniversalResponseObject).data as DailyTaskStats;
+    } catch (e) {
+      return undefined;
     }
   }
 
