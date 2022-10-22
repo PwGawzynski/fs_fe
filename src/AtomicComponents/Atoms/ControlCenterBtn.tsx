@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import React from 'react';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
 
 interface BtnProps {
   firstColumn: number;
@@ -13,10 +12,15 @@ interface PProps {
 }
 
 interface Props extends BtnProps {
-  actionPath: string;
-  navTo: string;
   children: React.ReactNode;
+  onClickHandler?: (param: any[]) => Promise<any>;
+  onClickParams?: any[];
 }
+
+const defaultProps = {
+  onClickHandler: () => {},
+  onClickParams: [],
+};
 
 const Btn = styled.button`
   grid-row: ${(props: BtnProps) =>
@@ -38,32 +42,27 @@ const BtnValue = styled.p`
   font-weight: bold;
 `;
 
-const handleOnClick = (
-  actionPath: string,
-  navTo: string,
-  nav: NavigateFunction,
-) => {
-  console.log(
-    'click on navigation btn with path: ',
-    actionPath,
-    ' and navigation to ',
-    navTo,
-    'and nav fn',
-    nav,
-  );
-};
-
 export const ControlCenterBtn = (props: Props) => {
-  const { children, navTo, actionPath, firstColumn, firstRow, color } = props;
-  const nav = useNavigate();
+  const {
+    children,
+    firstColumn,
+    firstRow,
+    color,
+    onClickHandler,
+    onClickParams,
+  } = props;
   return (
     <Btn
       color={color}
       firstRow={firstRow}
       firstColumn={firstColumn}
-      onClick={() => handleOnClick(actionPath, navTo, nav)}
+      onClick={() =>
+        onClickHandler && onClickParams && onClickHandler(onClickParams)
+      }
     >
       <BtnValue color={color}>{children}</BtnValue>
     </Btn>
   );
 };
+
+ControlCenterBtn.defaultProps = defaultProps;
