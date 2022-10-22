@@ -104,6 +104,17 @@ export class Api {
     }
   }
 
+  static async closeCurrentWorkDay(): Promise<UniversalResponseObject> {
+    try {
+      const res = (await Api.axiosInstance.put(
+        '/work-day/worker/close',
+      )) as AxiosResponse;
+      return res.data as UniversalResponseObject;
+    } catch (e) {
+      return { status: false } as UniversalResponseObject;
+    }
+  }
+
   static async getAllTaskWorkerStats(): Promise<DailyTaskStats | undefined> {
     try {
       const res = (await Api.axiosInstance.get(

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHourglass, faClock } from '@fortawesome/free-regular-svg-icons';
 import { faTractor } from '@fortawesome/free-solid-svg-icons';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { GetCurrentlyOpenWorkDayRes, UniversalResponseObject } from 'types';
 import { StatisticTextContainer } from '../Atoms/StyledContainers';
 import { Api } from '../../Utils/Api/Api';
@@ -54,19 +54,30 @@ async function handleDataAsk(
 
   setWorkDayData(doneTime);
 }
-export const UserWorkInfo = () => {
-  const [msFromStart, setMsFromStart] = useState(0);
+
+export interface Props {
+  msFromStart: number;
+  setMsFromStart: React.Dispatch<React.SetStateAction<number>>;
+  timerOn: boolean;
+}
+
+export const UserWorkInfo = (props: Props) => {
+  const { msFromStart, setMsFromStart, timerOn } = props;
   useEffect(() => {
     let intervalId: any;
-    (async () => {
-      await handleDataAsk(setMsFromStart);
-      intervalId = setInterval(
-        () => setMsFromStart((prevState) => prevState + 1),
-        1000,
-      );
-    })();
+    if (timerOn) {
+      (async () => {
+        await handleDataAsk(setMsFromStart);
+        intervalId = setInterval(
+          () => setMsFromStart((prevState) => prevState + 1),
+          1000,
+        );
+      })();
+    }
+    clearInterval(intervalId);
+
     return () => clearInterval(intervalId);
-  }, []);
+  }, [setMsFromStart, timerOn]);
   return (
     <StatisticTextContainer>
       <OneLineContainer>
@@ -85,6 +96,7 @@ export const UserWorkInfo = () => {
         <IconContainer>
           <FontAwesomeIcon icon={faClock} color="#05396e" />
         </IconContainer>
+        {/* here all counted nap time */}
         <P>12:32:14 s</P>
       </OneLineContainer>
       <OneLineContainer>
