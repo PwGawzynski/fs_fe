@@ -45,29 +45,34 @@ function convertToTime(ms: number) {
 
 async function handleDataAsk(
   setWorkDayData: React.Dispatch<React.SetStateAction<number>>,
+  setTimerOnOff: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
   const data = (await Api.getCurrentlyOpenWorkDay()) as UniversalResponseObject;
-  const givenTime = new Date(
-    (data.data as GetCurrentlyOpenWorkDayRes).startDate,
-  ).getTime();
-  const doneTime = (new Date().getTime() - givenTime) / 1000;
+  if (!data.status) setTimerOnOff(false);
+  else {
+    const givenTime = new Date(
+      (data.data as GetCurrentlyOpenWorkDayRes).startDate,
+    ).getTime();
+    const doneTime = (new Date().getTime() - givenTime) / 1000;
 
-  setWorkDayData(doneTime);
+    setWorkDayData(doneTime);
+  }
 }
 
 export interface Props {
   msFromStart: number;
   setMsFromStart: React.Dispatch<React.SetStateAction<number>>;
+  setTimerOnOff: React.Dispatch<React.SetStateAction<boolean>>;
   timerOn: boolean;
 }
 
 export const UserWorkInfo = (props: Props) => {
-  const { msFromStart, setMsFromStart, timerOn } = props;
+  const { msFromStart, setMsFromStart, timerOn, setTimerOnOff } = props;
   useEffect(() => {
     let intervalId: any;
     if (timerOn) {
       (async () => {
-        await handleDataAsk(setMsFromStart);
+        await handleDataAsk(setMsFromStart, setTimerOnOff);
         intervalId = setInterval(
           () => setMsFromStart((prevState) => prevState + 1),
           1000,
@@ -77,7 +82,7 @@ export const UserWorkInfo = (props: Props) => {
     clearInterval(intervalId);
 
     return () => clearInterval(intervalId);
-  }, [setMsFromStart, timerOn]);
+  }, [setMsFromStart, timerOn, setTimerOnOff]);
   return (
     <StatisticTextContainer>
       <OneLineContainer>
