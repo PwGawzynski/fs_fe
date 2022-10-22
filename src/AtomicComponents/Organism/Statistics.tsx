@@ -8,11 +8,12 @@ import { DoneAreaPieChart } from './DoneAreaPieChart';
 export interface Props {
   msFromStart: number;
   setMsFromStart: React.Dispatch<React.SetStateAction<number>>;
+  setTimerOnOff: React.Dispatch<React.SetStateAction<boolean>>;
   timerOn: boolean;
 }
 
 export const Statistics = (props: Props) => {
-  const { msFromStart, setMsFromStart, timerOn } = props;
+  const { msFromStart, setMsFromStart, timerOn, setTimerOnOff } = props;
 
   return (
     <StatisticsContainer>
@@ -21,6 +22,7 @@ export const Statistics = (props: Props) => {
         msFromStart={msFromStart}
         setMsFromStart={setMsFromStart}
         timerOn={timerOn}
+        setTimerOnOff={setTimerOnOff}
       />
       <DoneTaskPieChart />
       <DoneAreaPieChart />

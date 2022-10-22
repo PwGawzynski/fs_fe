@@ -10,20 +10,35 @@ import {
 
 async function handleEOWorkClick(params: any[]) {
   // TODO add info how long workday was
-  const [notification, setMsFromStart, setTimerOnOff] = params;
-  if (!notification) return;
-  const response = await Api.closeCurrentWorkDay();
+  const [notification, setMsFromStart, setTimerOnOff, timerOn] = params;
+  if (!notification && setMsFromStart && setTimerOnOff) return;
+  let response;
+  let onSuccessMessage;
+  let onFailureMessage;
+  if (timerOn) {
+    response = await Api.closeCurrentWorkDay();
+    onSuccessMessage =
+      "Congrats you've done your work for today, see u tomorrow";
+    onFailureMessage =
+      'Sorry something went wrong, we cannot close your current work day, possible: ';
+    setTimerOnOff(false);
+    setMsFromStart(0);
+  } else {
+    response = await Api.openNewWorkDay();
+    onSuccessMessage = 'New Work Day has been correctly open';
+    onFailureMessage =
+      'Sorry something went wrong, we cannot open new work day for you, possible: ';
+    setTimerOnOff(true);
+  }
   if (response.status) {
     (notification as NotificationContextObj).setNotification({
       display: true,
-      message: "Congrats you've done your work for today, see u tomorrow",
+      message: onSuccessMessage,
     });
-    setMsFromStart(0);
-    setTimerOnOff(false);
   } else {
     (notification as NotificationContextObj).setNotification({
       display: true,
-      message: `Sorry something went wrong, we cannot close your current work day, possible:  ${response.message}`,
+      message: `${onFailureMessage}  ${response.message}`,
     });
   }
 }
@@ -31,10 +46,11 @@ async function handleEOWorkClick(params: any[]) {
 export interface Props {
   setMsFromStart: React.Dispatch<React.SetStateAction<number>>;
   setTimerOnOff: React.Dispatch<React.SetStateAction<boolean>>;
+  timerOn: boolean;
 }
 
 export const Control = (props: Props) => {
-  const { setMsFromStart, setTimerOnOff } = props;
+  const { setMsFromStart, setTimerOnOff, timerOn } = props;
 
   const notification = useContext(NotificationsContext);
   return (
@@ -56,10 +72,10 @@ export const Control = (props: Props) => {
         firstColumn={12}
         firstRow={5}
         color="#05396e"
-        onClickParams={[notification, setMsFromStart, setTimerOnOff]}
+        onClickParams={[notification, setMsFromStart, setTimerOnOff, timerOn]}
         onClickHandler={handleEOWorkClick}
       >
-        END WORK FOR TODAY
+        {timerOn ? 'END WORK FOR TODAY' : 'START NEW WORK DAY'}
       </ControlCenterBtn>
 
       <ControlCenterBtn firstColumn={12} firstRow={10} color="#05396e">

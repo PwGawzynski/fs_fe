@@ -24,11 +24,13 @@ export const Desktop = () => {
         <Statistics
           msFromStart={msFromStart}
           setMsFromStart={setMsFromStart}
+          setTimerOnOff={setTimerOnOff}
           timerOn={timerOn}
         />
         <Control
           setTimerOnOff={setTimerOnOff}
           setMsFromStart={setMsFromStart}
+          timerOn={timerOn}
         />
       </OperationCenter>
     </DesktopMainContainer>
