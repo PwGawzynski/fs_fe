@@ -2,7 +2,10 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHourglass, faClock } from '@fortawesome/free-regular-svg-icons';
 import { faTractor } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from 'react';
+import { GetCurrentlyOpenWorkDayRes, UniversalResponseObject } from 'types';
 import { StatisticTextContainer } from '../Atoms/StyledContainers';
+import { Api } from '../../Utils/Api/Api';
 
 const P = styled.p`
   font-family: Roboto;
@@ -31,14 +34,46 @@ const IconContainer = styled(OneLineContainer)`
   justify-content: flex-start;
 `;
 
+function convertToTime(ms: number) {
+  const hours = Math.floor(ms / 60 / 60);
+  const minutes = Math.floor((ms - hours * 60 * 60) / 60);
+  const seconds = Math.floor(ms - hours * 60 * 60 - minutes * 60);
+  return `${hours}:${minutes < 10 ? `0${minutes}` : minutes}:${
+    seconds < 10 ? `0${seconds}` : seconds
+  }   s`;
+}
+
+async function handleDataAsk(
+  setWorkDayData: React.Dispatch<React.SetStateAction<number>>,
+) {
+  const data = (await Api.getCurrentlyOpenWorkDay()) as UniversalResponseObject;
+  const givenTime = new Date(
+    (data.data as GetCurrentlyOpenWorkDayRes).startDate,
+  ).getTime();
+  const doneTime = (new Date().getTime() - givenTime) / 1000;
+
+  setWorkDayData(doneTime);
+}
 export const UserWorkInfo = () => {
+  const [msFromStart, setMsFromStart] = useState(0);
+  useEffect(() => {
+    let intervalId: any;
+    (async () => {
+      await handleDataAsk(setMsFromStart);
+      intervalId = setInterval(
+        () => setMsFromStart((prevState) => prevState + 1),
+        1000,
+      );
+    })();
+    return () => clearInterval(intervalId);
+  }, []);
   return (
     <StatisticTextContainer>
       <OneLineContainer>
         <IconContainer>
           <FontAwesomeIcon icon={faHourglass} color="#05396e" />
         </IconContainer>
-        <P>00:00:12 s</P>
+        <P>{convertToTime(msFromStart)}</P>
       </OneLineContainer>
       <OneLineContainer>
         <IconContainer>
