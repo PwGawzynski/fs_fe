@@ -43,6 +43,7 @@
                 "namedComponents": "arrow-function",
                 "unnamedComponents": "arrow-function"
             }
-        ]
+        ],
+        "no-nested-ternary": "off"
     }
 }
