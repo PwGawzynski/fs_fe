@@ -126,6 +126,28 @@ export class Api {
     }
   }
 
+  static async takeNap(): Promise<UniversalResponseObject> {
+    try {
+      const res = (await Api.axiosInstance.post(
+        '/nap/worker',
+      )) as AxiosResponse;
+      return res.data as UniversalResponseObject;
+    } catch (e) {
+      return { status: false } as UniversalResponseObject;
+    }
+  }
+
+  static async endNap(): Promise<UniversalResponseObject> {
+    try {
+      const res = (await Api.axiosInstance.put(
+        '/nap/worker/close',
+      )) as AxiosResponse;
+      return res.data as UniversalResponseObject;
+    } catch (e) {
+      return { status: false } as UniversalResponseObject;
+    }
+  }
+
   static async getAllTaskWorkerStats(): Promise<DailyTaskStats | undefined> {
     try {
       const res = (await Api.axiosInstance.get(

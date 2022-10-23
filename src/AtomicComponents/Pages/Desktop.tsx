@@ -15,6 +15,9 @@ export const Desktop = () => {
   const [msFromStart, setMsFromStart] = useState(0);
   const [timerOn, setTimerOnOff] = useState(true);
 
+  // const [msNapFromStart, setMsNapFromStart] = useState(0);
+  const [napTimerOff, setNapTimerOnOff] = useState(true);
+
   return (
     <DesktopMainContainer>
       <TopBar />
@@ -31,6 +34,8 @@ export const Desktop = () => {
           setTimerOnOff={setTimerOnOff}
           setMsFromStart={setMsFromStart}
           timerOn={timerOn}
+          setNapTimerOnOff={setNapTimerOnOff}
+          napTimerOff={napTimerOff}
         />
       </OperationCenter>
     </DesktopMainContainer>

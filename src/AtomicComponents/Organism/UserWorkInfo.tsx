@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import { GetCurrentlyOpenWorkDayRes, UniversalResponseObject } from 'types';
 import { StatisticTextContainer } from '../Atoms/StyledContainers';
 import { Api } from '../../Utils/Api/Api';
+import { convertToTime } from '../../Utils/helpers/convertToTime';
 
 const P = styled.p`
   font-family: Roboto;
@@ -33,15 +34,6 @@ const IconContainer = styled(OneLineContainer)`
   width: 10%;
   justify-content: flex-start;
 `;
-
-function convertToTime(ms: number) {
-  const hours = Math.floor(ms / 60 / 60);
-  const minutes = Math.floor((ms - hours * 60 * 60) / 60);
-  const seconds = Math.floor(ms - hours * 60 * 60 - minutes * 60);
-  return `${hours}:${minutes < 10 ? `0${minutes}` : minutes}:${
-    seconds < 10 ? `0${seconds}` : seconds
-  }   s`;
-}
 
 async function handleDataAsk(
   setWorkDayData: React.Dispatch<React.SetStateAction<number>>,
