@@ -2,62 +2,46 @@ import React, { useContext } from 'react';
 import { ControlCenter } from '../Atoms/StyledContainers';
 import { DisplayContainerSign } from '../Atoms/DisplayContainerSign';
 import { ControlCenterBtn } from '../Atoms/ControlCenterBtn';
-import { Api } from '../../Utils/Api/Api';
-import {
-  NotificationContextObj,
-  NotificationsContext,
-} from '../../ContextFactories/NotificationsContext';
-
-async function handleEOWorkClick(params: any[]) {
-  // TODO add info how long workday was
-  const [notification, setMsFromStart, setTimerOnOff, timerOn] = params;
-  if (!notification && setMsFromStart && setTimerOnOff) return;
-  let response;
-  let onSuccessMessage;
-  let onFailureMessage;
-  if (timerOn) {
-    response = await Api.closeCurrentWorkDay();
-    onSuccessMessage =
-      "Congrats you've done your work for today, see u tomorrow";
-    onFailureMessage =
-      'Sorry something went wrong, we cannot close your current work day, possible: ';
-    setTimerOnOff(false);
-    setMsFromStart(0);
-  } else {
-    response = await Api.openNewWorkDay();
-    onSuccessMessage = 'New Work Day has been correctly open';
-    onFailureMessage =
-      'Sorry something went wrong, we cannot open new work day for you, possible: ';
-    setTimerOnOff(true);
-  }
-  if (response.status) {
-    (notification as NotificationContextObj).setNotification({
-      display: true,
-      message: onSuccessMessage,
-    });
-  } else {
-    (notification as NotificationContextObj).setNotification({
-      display: true,
-      message: `${onFailureMessage}  ${response.message}`,
-    });
-  }
-}
+import { NotificationsContext } from '../../ContextFactories/NotificationsContext';
+import { handleEOWorkClick } from '../../Utils/controlCenterHelpers/handleEOWorkClick';
+import { handleTakeNap } from '../../Utils/controlCenterHelpers/handleTakeNap';
 
 export interface Props {
   setMsFromStart: React.Dispatch<React.SetStateAction<number>>;
+  setNapTimerOnOff: React.Dispatch<React.SetStateAction<boolean>>;
   setTimerOnOff: React.Dispatch<React.SetStateAction<boolean>>;
   timerOn: boolean;
+  napTimerOff: boolean;
 }
 
 export const Control = (props: Props) => {
-  const { setMsFromStart, setTimerOnOff, timerOn } = props;
+  const {
+    setMsFromStart,
+    setTimerOnOff,
+    timerOn,
+    setNapTimerOnOff,
+    napTimerOff,
+  } = props;
 
   const notification = useContext(NotificationsContext);
   return (
     <ControlCenter>
       <DisplayContainerSign>CONTROL CENTER</DisplayContainerSign>
-      <ControlCenterBtn firstColumn={2} firstRow={5} color="#05396e">
-        TAKE A NAP
+      <ControlCenterBtn
+        firstColumn={2}
+        firstRow={5}
+        color={timerOn ? '#05396e' : napTimerOff ? '#7393B3' : '#FF5733'}
+        onClickParams={[
+          notification,
+          setMsFromStart,
+          setTimerOnOff,
+          timerOn,
+          setNapTimerOnOff,
+          napTimerOff,
+        ]}
+        onClickHandler={handleTakeNap}
+      >
+        {napTimerOff ? 'TAKE A NAP' : 'RESUME WORK'}
       </ControlCenterBtn>
 
       <ControlCenterBtn firstColumn={2} firstRow={10} color="#05396e">
@@ -71,11 +55,15 @@ export const Control = (props: Props) => {
       <ControlCenterBtn
         firstColumn={12}
         firstRow={5}
-        color="#05396e"
+        color={napTimerOff ? '#05396e' : '#7393B3'}
         onClickParams={[notification, setMsFromStart, setTimerOnOff, timerOn]}
         onClickHandler={handleEOWorkClick}
       >
-        {timerOn ? 'END WORK FOR TODAY' : 'START NEW WORK DAY'}
+        {timerOn
+          ? 'END WORK FOR TODAY'
+          : napTimerOff
+          ? 'START NEW WORK DAsY'
+          : 'END WORK FOR TODAY'}
       </ControlCenterBtn>
 
       <ControlCenterBtn firstColumn={12} firstRow={10} color="#05396e">
