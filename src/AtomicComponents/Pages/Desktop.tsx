@@ -15,7 +15,7 @@ export const Desktop = () => {
   const [msFromStart, setMsFromStart] = useState(0);
   const [timerOn, setTimerOnOff] = useState(true);
 
-  // const [msNapFromStart, setMsNapFromStart] = useState(0);
+  const [msNapFromStart, setMsNapFromStart] = useState(0);
   const [napTimerOff, setNapTimerOnOff] = useState(true);
 
   return (
@@ -29,6 +29,9 @@ export const Desktop = () => {
           setMsFromStart={setMsFromStart}
           setTimerOnOff={setTimerOnOff}
           timerOn={timerOn}
+          setMsNapFromStart={setMsNapFromStart}
+          msNapFromStart={msNapFromStart}
+          napTimerOff={napTimerOff}
         />
         <Control
           setTimerOnOff={setTimerOnOff}

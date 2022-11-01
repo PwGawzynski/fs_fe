@@ -104,6 +104,17 @@ export class Api {
     }
   }
 
+  static async getAllCountedNapTime(): Promise<UniversalResponseObject> {
+    try {
+      const res = (await Api.axiosInstance.get(
+        '/nap/worker/allTimeInMs',
+      )) as AxiosResponse;
+      return res.data as UniversalResponseObject;
+    } catch (e) {
+      return { status: false } as UniversalResponseObject;
+    }
+  }
+
   static async openNewWorkDay(): Promise<UniversalResponseObject> {
     try {
       const res = (await Api.axiosInstance.post(
