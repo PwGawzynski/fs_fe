@@ -7,18 +7,24 @@ export const DesktopMainContainer = styled(StyledDivContainer)`
   margin-top: 8vh;
 `;
 
+export interface OperationCenterProps {
+  height?: string;
+}
+
 export const OperationCenter = styled.div`
   width: 100vw;
-  height: 65vh;
+  height: ${(props: OperationCenterProps) => props.height || '65vh'};
   -webkit-border-top-left-radius: 10px;
   -webkit-border-top-right-radius: 10px;
   background-color: white;
   position: absolute;
-  top: 35vh;
+  top: ${(props: OperationCenterProps) =>
+    props.height === '65vh' ? '35vh' : '8vh'};
   box-shadow: 5px -10px 50px rgba(0, 0, 0, 0.2);
   display: grid;
   grid-template-columns: repeat(10, 10vw);
-  grid-template-rows: repeat(13, 5vh);
+  grid-template-rows: ${(props: OperationCenterProps) =>
+    props.height === '65vh' ? 'repeat(13, 5vh)' : 'repeat(23, 4vh)'};
 `;
 
 export const StatisticsContainer = styled.div`
@@ -38,6 +44,11 @@ export const StatisticsContainer = styled.div`
 export const ControlCenter = styled(StatisticsContainer)`
   grid-row-start: 8;
   grid-row-end: 13;
+`;
+
+export const TaskCenter = styled(StatisticsContainer)`
+  grid-row-start: 14;
+  grid-row-end: 20;
 `;
 
 export const StatisticTextContainer = styled.div`

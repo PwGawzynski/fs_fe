@@ -115,11 +115,33 @@ export class Api {
     }
   }
 
+  static async getAllTasks(): Promise<UniversalResponseObject> {
+    try {
+      const res = (await Api.axiosInstance.get(
+        '/task/undone-for-date/worker',
+      )) as AxiosResponse;
+      return res.data as UniversalResponseObject;
+    } catch (e) {
+      return { status: false } as UniversalResponseObject;
+    }
+  }
+
   static async openNewWorkDay(): Promise<UniversalResponseObject> {
     try {
       const res = (await Api.axiosInstance.post(
         '/work-day/worker',
       )) as AxiosResponse;
+      return res.data as UniversalResponseObject;
+    } catch (e) {
+      return { status: false } as UniversalResponseObject;
+    }
+  }
+
+  static async startTask(taskId: string): Promise<UniversalResponseObject> {
+    try {
+      const res = (await Api.axiosInstance.post('/task/start/worker', {
+        taskId,
+      })) as AxiosResponse;
       return res.data as UniversalResponseObject;
     } catch (e) {
       return { status: false } as UniversalResponseObject;

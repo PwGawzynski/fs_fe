@@ -53,9 +53,10 @@ async function handleDataAsk(
       (data.data as GetCurrentlyOpenWorkDayRes).startDate,
     ).getTime();
     const doneTime = (new Date().getTime() - givenTime) / 1000;
-    setMsNapFromStart(
-      (napData.data as CountedNapsTimeRes).allCountedNapsTime / 1000,
-    );
+    if (napData?.data)
+      setMsNapFromStart(
+        (napData.data as CountedNapsTimeRes).allCountedNapsTime / 1000,
+      );
     setWorkDayData(doneTime);
   }
 }
