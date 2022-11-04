@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ControlCenter } from '../Atoms/StyledContainers';
 import { DisplayContainerSign } from '../Atoms/DisplayContainerSign';
 import { ControlCenterBtn } from '../Atoms/ControlCenterBtn';
 import { NotificationsContext } from '../../ContextFactories/NotificationsContext';
-import { handleEOWorkClick } from '../../Utils/controlCenterHelpers/handleEOWorkClick';
-import { handleTakeNap } from '../../Utils/controlCenterHelpers/handleTakeNap';
+import { handleEOWorkClick } from '../../Utils/onActionHandlers/handleEOWorkClick';
+import { handleTakeNap } from '../../Utils/onActionHandlers/handleTakeNap';
+import { handleStartTask } from '../../Utils/onActionHandlers/handleStartTask';
 
 export interface Props {
   setMsFromStart: React.Dispatch<React.SetStateAction<number>>;
@@ -24,6 +26,9 @@ export const Control = (props: Props) => {
   } = props;
 
   const notification = useContext(NotificationsContext);
+
+  const nav = useNavigate();
+
   return (
     <ControlCenter>
       <DisplayContainerSign>CONTROL CENTER</DisplayContainerSign>
@@ -66,8 +71,14 @@ export const Control = (props: Props) => {
           : 'END WORK FOR TODAY'}
       </ControlCenterBtn>
 
-      <ControlCenterBtn firstColumn={12} firstRow={10} color="#05396e">
-        IDN
+      <ControlCenterBtn
+        firstColumn={12}
+        firstRow={10}
+        color="#05396e"
+        onClickParams={[nav]}
+        onClickHandler={handleStartTask}
+      >
+        START TASK
       </ControlCenterBtn>
 
       <ControlCenterBtn firstColumn={12} firstRow={15} color="#05396e">

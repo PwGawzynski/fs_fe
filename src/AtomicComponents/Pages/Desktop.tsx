@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { SerializedTaskResponse } from 'types';
 import { TopBar } from '../Organism/TopBar';
 import { useAuth } from '../../Utils/Hooks/authHook';
 import {
@@ -8,8 +9,15 @@ import {
 import { DesktopBg } from '../Atoms/DesktopBg';
 import { Statistics } from '../Organism/Statistics';
 import { Control } from '../Organism/Control';
+import { DesktopSettingsContext } from '../../ContextFactories/DesktopSettingsContext';
+import { Task } from '../Organism/Task';
 
-export const Desktop = () => {
+export interface Props {
+  setCurrentTask: React.Dispatch<React.SetStateAction<SerializedTaskResponse>>;
+  currenOpenTask: SerializedTaskResponse;
+}
+export const Desktop = ({ setCurrentTask, currenOpenTask }: Props) => {
+  console.log(setCurrentTask, `${currenOpenTask}msaoimso`);
   const { user } = useAuth();
   const { worker, owner } = user;
   const [msFromStart, setMsFromStart] = useState(0);
@@ -18,12 +26,14 @@ export const Desktop = () => {
   const [msNapFromStart, setMsNapFromStart] = useState(0);
   const [napTimerOff, setNapTimerOnOff] = useState(true);
 
+  const { settings } = useContext(DesktopSettingsContext);
+
   return (
     <DesktopMainContainer>
       <TopBar />
-      <DesktopBg />
+      {settings.bgPhotoShowed && <DesktopBg />}
       {worker && owner}
-      <OperationCenter>
+      <OperationCenter height={settings.OperationCenterHeight}>
         <Statistics
           msFromStart={msFromStart}
           setMsFromStart={setMsFromStart}
@@ -40,6 +50,7 @@ export const Desktop = () => {
           setNapTimerOnOff={setNapTimerOnOff}
           napTimerOff={napTimerOff}
         />
+        {currenOpenTask?.id && <Task data={currenOpenTask} />}
       </OperationCenter>
     </DesktopMainContainer>
   );
