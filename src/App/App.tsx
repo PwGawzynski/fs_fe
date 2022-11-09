@@ -54,12 +54,7 @@ export const App = () => {
               <Route path="/protected" element={<ProtectedResources />}>
                 <Route
                   path="desktop"
-                  element={
-                    <Desktop
-                      setCurrentTask={setOpenTask}
-                      currenOpenTask={openTask}
-                    />
-                  }
+                  element={<Desktop currenOpenTask={openTask} />}
                 />
                 <Route
                   path="today-tasks"

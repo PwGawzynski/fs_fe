@@ -13,11 +13,9 @@ import { DesktopSettingsContext } from '../../ContextFactories/DesktopSettingsCo
 import { Task } from '../Organism/Task';
 
 export interface Props {
-  setCurrentTask: React.Dispatch<React.SetStateAction<SerializedTaskResponse>>;
   currenOpenTask: SerializedTaskResponse;
 }
-export const Desktop = ({ setCurrentTask, currenOpenTask }: Props) => {
-  console.log(setCurrentTask, `${currenOpenTask}msaoimso`);
+export const Desktop = ({ currenOpenTask }: Props) => {
   const { user } = useAuth();
   const { worker, owner } = user;
   const [msFromStart, setMsFromStart] = useState(0);

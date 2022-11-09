@@ -11,6 +11,7 @@ import {
 import { StatisticTextContainer } from '../Atoms/StyledContainers';
 import { Api } from '../../Utils/Api/Api';
 import { convertToTime } from '../../Utils/helpers/convertToTime';
+import { Timer } from './Timer';
 
 const P = styled.p`
   font-family: Roboto, serif;
@@ -82,31 +83,9 @@ export const UserWorkInfo = (props: Props) => {
     napTimerOff,
   } = props;
   useEffect(() => {
-    let intervalId: any;
-    let napIntervalId: any;
-    if (timerOn) {
-      (async () => {
-        await handleDataAsk(setMsFromStart, setMsNapFromStart, setTimerOnOff);
-        intervalId = setInterval(
-          () => setMsFromStart((prevState) => prevState + 1),
-          1000,
-        );
-      })();
-    }
-    if (!napTimerOff) {
-      (async () => {
-        napIntervalId = setInterval(
-          () => setMsNapFromStart((prevState) => prevState + 1),
-          1000,
-        );
-      })();
-    }
-    clearInterval(intervalId);
-
-    return () => {
-      clearInterval(intervalId);
-      clearInterval(napIntervalId);
-    };
+    (async () => {
+      await handleDataAsk(setMsFromStart, setMsNapFromStart, setTimerOnOff);
+    })();
   }, [setMsFromStart, timerOn, setTimerOnOff, setMsNapFromStart, napTimerOff]);
   return (
     <StatisticTextContainer>
@@ -114,7 +93,7 @@ export const UserWorkInfo = (props: Props) => {
         <IconContainer>
           <FontAwesomeIcon icon={faHourglass} color="#05396e" />
         </IconContainer>
-        <P>{convertToTime(msFromStart)}</P>
+        <Timer initMs={msFromStart} on={timerOn} />
       </OneLineContainer>
       <OneLineContainer>
         <IconContainer>
@@ -127,7 +106,7 @@ export const UserWorkInfo = (props: Props) => {
           <FontAwesomeIcon icon={faClock} color="#05396e" />
         </IconContainer>
         {/* here all counted nap time */}
-        <P>{convertToTime(msNapFromStart)}</P>
+        <Timer initMs={msNapFromStart} on={!napTimerOff} />
       </OneLineContainer>
       <OneLineContainer>
         <IconContainer>
