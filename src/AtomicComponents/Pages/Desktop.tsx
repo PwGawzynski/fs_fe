@@ -48,7 +48,9 @@ export const Desktop = ({ currenOpenTask }: Props) => {
           setNapTimerOnOff={setNapTimerOnOff}
           napTimerOff={napTimerOff}
         />
-        {currenOpenTask?.id && <Task data={currenOpenTask} />}
+        {currenOpenTask?.id && (
+          <Task data={currenOpenTask} stopTimerFlags={[timerOn]} />
+        )}
       </OperationCenter>
     </DesktopMainContainer>
   );
