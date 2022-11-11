@@ -18,7 +18,6 @@ export interface Props {
 }
 
 export const Timer = ({ initMs, on }: Props) => {
-  console.log(initMs);
   const [ms, setMs] = useState(initMs);
   useEffect(() => {
     setMs(initMs);

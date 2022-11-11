@@ -10,7 +10,6 @@ import {
 } from 'types';
 import { StatisticTextContainer } from '../Atoms/StyledContainers';
 import { Api } from '../../Utils/Api/Api';
-import { convertToTime } from '../../Utils/helpers/convertToTime';
 import { Timer } from './Timer';
 
 const P = styled.p`

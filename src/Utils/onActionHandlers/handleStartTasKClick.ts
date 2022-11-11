@@ -31,6 +31,9 @@ export const handleStartTasKClick = async (
     OperationCenterHeight: '92vh',
     bgPhotoShowed: false,
   }));
-  setCurrentTask(data);
+  const customData: SerializedTaskResponse = data;
+  // this assignation is for save start date of task and avoid unnecessary server req
+  customData.startDate = new Date();
+  setCurrentTask(customData);
   nav('../desktop');
 };

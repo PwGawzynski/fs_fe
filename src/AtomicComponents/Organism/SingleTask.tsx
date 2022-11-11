@@ -47,8 +47,8 @@ export const SingleTask = ({ data, setCurrentTask, currenOpenTask }: Props) => {
         </StyledDivContainer>
         <StyledDivContainer width="50%" margin="0 5% 0 0">
           <NavBtn
-            enabled={!(openTaskId && data.id !== openTaskId)}
-            onBtnText="START"
+            enabled={!data.startDate}
+            onBtnText={data.id === openTaskId ? 'ACTIVE' : 'START'}
             onClickHandler={() =>
               handleStartTasKClick(
                 data,
