@@ -5,7 +5,9 @@ import { handleFetchTaskList } from '../../Utils/onActionHandlers/handleFetchTas
 import { SingleTask } from '../Organism/SingleTask';
 
 export interface Props {
-  setCurrentTask: React.Dispatch<React.SetStateAction<SerializedTaskResponse>>;
+  setCurrentTask: React.Dispatch<
+    React.SetStateAction<SerializedTaskResponse | undefined>
+  >;
   currenOpenTask: SerializedTaskResponse | undefined;
 }
 
