@@ -44,7 +44,9 @@ export const App = () => {
       } as DesktopSettingsContextI),
     [desktopSettings, setDesktopSettings],
   );
-  const [openTask, setOpenTask] = useState({} as SerializedTaskResponse);
+  const [openTask, setOpenTask] = useState(
+    {} as SerializedTaskResponse | undefined,
+  );
   return (
     <BrowserRouter>
       <AuthProvider>
@@ -54,7 +56,12 @@ export const App = () => {
               <Route path="/protected" element={<ProtectedResources />}>
                 <Route
                   path="desktop"
-                  element={<Desktop currenOpenTask={openTask} />}
+                  element={
+                    <Desktop
+                      currenOpenTask={openTask}
+                      setCurrentTask={setOpenTask}
+                    />
+                  }
                 />
                 <Route
                   path="today-tasks"
