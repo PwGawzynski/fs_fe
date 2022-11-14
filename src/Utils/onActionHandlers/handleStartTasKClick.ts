@@ -10,7 +10,9 @@ export const handleStartTasKClick = async (
   nav: NavigateFunction,
   notification: NotificationContextObj,
   settings: DesktopSettingsContextI,
-  setCurrentTask: React.Dispatch<React.SetStateAction<SerializedTaskResponse>>,
+  setCurrentTask: React.Dispatch<
+    React.SetStateAction<SerializedTaskResponse | undefined>
+  >,
 ) => {
   const res = await Api.startTask(data.id);
   if (!res.status) {
