@@ -13,9 +13,12 @@ import { DesktopSettingsContext } from '../../ContextFactories/DesktopSettingsCo
 import { Task } from '../Organism/Task';
 
 export interface Props {
-  currenOpenTask: SerializedTaskResponse;
+  currenOpenTask: SerializedTaskResponse | undefined;
+  setCurrentTask: React.Dispatch<
+    React.SetStateAction<SerializedTaskResponse | undefined>
+  >;
 }
-export const Desktop = ({ currenOpenTask }: Props) => {
+export const Desktop = ({ currenOpenTask, setCurrentTask }: Props) => {
   const { user } = useAuth();
   const { worker, owner } = user;
   const [msFromStart, setMsFromStart] = useState(0);
@@ -49,7 +52,11 @@ export const Desktop = ({ currenOpenTask }: Props) => {
           napTimerOff={napTimerOff}
         />
         {currenOpenTask?.id && (
-          <Task data={currenOpenTask} stopTimerFlags={[timerOn]} />
+          <Task
+            data={currenOpenTask}
+            stopTimerFlags={[timerOn]}
+            setCurrentTask={setCurrentTask}
+          />
         )}
       </OperationCenter>
     </DesktopMainContainer>

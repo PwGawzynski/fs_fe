@@ -1,11 +1,11 @@
 import { NavigateFunction } from 'react-router-dom';
-import React from 'react';
 import { SerializedTaskResponse } from 'types';
+import React from 'react';
 import { NotificationContextObj } from '../../ContextFactories/NotificationsContext';
 import { Api } from '../Api/Api';
 import { DesktopSettingsContextI } from '../../ContextFactories/DesktopSettingsContext';
 
-export const handleStartTasKClick = async (
+export const handleEndTask = async (
   data: SerializedTaskResponse,
   nav: NavigateFunction,
   notification: NotificationContextObj,
@@ -14,28 +14,25 @@ export const handleStartTasKClick = async (
     React.SetStateAction<SerializedTaskResponse | undefined>
   >,
 ) => {
-  const res = await Api.startTask(data.id);
+  const res = await Api.endTask(data.id);
   if (!res.status) {
     notification.setNotification({
       display: true,
       message:
-        'Sorry we cannot start this task, something went wrong, please try again later',
+        'Sorry we cannot end this task, something went wrong, please try again later',
     });
     nav('../desktop');
     return;
   }
   notification.setNotification({
     display: true,
-    message: 'Task correctly started !',
+    message: 'Task correctly ended !',
   });
   settings.setDesktopSettings((prev) => ({
     ...prev,
-    OperationCenterHeight: '92vh',
-    bgPhotoShowed: false,
+    OperationCenterHeight: '65vh',
+    bgPhotoShowed: true,
   }));
-  const customData: SerializedTaskResponse = data;
-  // this assignation is for save start date of task and avoid unnecessary server req
-  customData.startDate = new Date();
-  setCurrentTask(customData);
+  setCurrentTask(undefined);
   nav('../desktop');
 };

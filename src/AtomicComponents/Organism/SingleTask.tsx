@@ -11,7 +11,9 @@ import { DesktopSettingsContext } from '../../ContextFactories/DesktopSettingsCo
 
 export interface Props {
   data: SerializedTaskResponse;
-  setCurrentTask: React.Dispatch<React.SetStateAction<SerializedTaskResponse>>;
+  setCurrentTask: React.Dispatch<
+    React.SetStateAction<SerializedTaskResponse | undefined>
+  >;
   currenOpenTask: SerializedTaskResponse | undefined;
 }
 

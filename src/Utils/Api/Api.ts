@@ -148,6 +148,17 @@ export class Api {
     }
   }
 
+  static async endTask(taskId: string): Promise<UniversalResponseObject> {
+    try {
+      const res = (await Api.axiosInstance.post('/task/end/worker', {
+        taskId,
+      })) as AxiosResponse;
+      return res.data as UniversalResponseObject;
+    } catch (e) {
+      return { status: false } as UniversalResponseObject;
+    }
+  }
+
   static async closeCurrentWorkDay(): Promise<UniversalResponseObject> {
     try {
       const res = (await Api.axiosInstance.put(
