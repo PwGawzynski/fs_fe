@@ -3,6 +3,7 @@ import React, { createContext } from 'react';
 export interface DesktopSettingsContextElementsI {
   OperationCenterHeight: string;
   bgPhotoShowed: boolean;
+  reloadFlag: boolean;
 }
 
 export interface DesktopSettingsContextI {

@@ -23,6 +23,7 @@ export const SingleTask = ({ data, setCurrentTask, currenOpenTask }: Props) => {
   const settings = useContext(DesktopSettingsContext);
   const performData = new Date(data.performanceDay);
   const openTaskId = currenOpenTask?.id;
+
   return (
     <SingleTaskContainer>
       <StyledDivContainer
