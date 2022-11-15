@@ -27,11 +27,13 @@ export const handleEndTask = async (
   notification.setNotification({
     display: true,
     message: 'Task correctly ended !',
+    onClickAction: () => nav(0),
   });
   settings.setDesktopSettings((prev) => ({
     ...prev,
     OperationCenterHeight: '65vh',
     bgPhotoShowed: true,
+    reloadFlag: true,
   }));
   setCurrentTask(undefined);
   nav('../desktop');
