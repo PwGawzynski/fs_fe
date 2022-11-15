@@ -26,7 +26,6 @@ export const Desktop = ({ currenOpenTask, setCurrentTask }: Props) => {
 
   const [msNapFromStart, setMsNapFromStart] = useState(0);
   const [napTimerOff, setNapTimerOnOff] = useState(true);
-
   const { settings } = useContext(DesktopSettingsContext);
 
   return (
