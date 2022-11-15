@@ -34,6 +34,7 @@ export const App = () => {
   const [desktopSettings, setDesktopSettings] = useState({
     OperationCenterHeight: '65vh',
     bgPhotoShowed: true,
+    reloadFlag: false,
   } as DesktopSettingsContextElementsI);
 
   const settingsMemo = useMemo(
