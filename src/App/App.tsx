@@ -17,6 +17,7 @@ import {
   DesktopSettingsContextElementsI,
   DesktopSettingsContextI,
 } from '../ContextFactories/DesktopSettingsContext';
+import { OwnerProtectedResources } from '../AtomicComponents/Layouts/OwnerProtectedResources';
 
 export const App = () => {
   const [notification, setNotification] = useState({
@@ -73,6 +74,26 @@ export const App = () => {
                     />
                   }
                 />
+                <Route path="owner" element={<OwnerProtectedResources />}>
+                  <Route
+                    path="desktop"
+                    element={
+                      <Desktop
+                        currenOpenTask={openTask}
+                        setCurrentTask={setOpenTask}
+                      />
+                    }
+                  />
+                  <Route
+                    path="today-tasks"
+                    element={
+                      <TasksList
+                        setCurrentTask={setOpenTask}
+                        currenOpenTask={openTask}
+                      />
+                    }
+                  />
+                </Route>
               </Route>
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />

@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }: Pros) => {
     [navigate, setUser],
   );
 
-  // call this function to sign out logged in user
+  // call this function to sign out logged-in user
   const setLogoutLS = useCallback(() => {
     setUser(null);
     navigate('/', { replace: true });
