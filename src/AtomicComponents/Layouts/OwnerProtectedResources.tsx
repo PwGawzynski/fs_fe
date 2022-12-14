@@ -25,7 +25,7 @@ const handleSession = async (
       display: true,
       message: 'You do not own privileges to perform this action',
     });
-    nav('./../login');
+    nav('./../../login');
   }
 };
 
