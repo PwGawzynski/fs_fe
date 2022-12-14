@@ -7,6 +7,7 @@ import { NotificationsContext } from '../../ContextFactories/NotificationsContex
 import { handleEOWorkClick } from '../../Utils/onActionHandlers/handleEOWorkClick';
 import { handleTakeNap } from '../../Utils/onActionHandlers/handleTakeNap';
 import { handleStartTask } from '../../Utils/onActionHandlers/handleStartTask';
+import { handleBadClickInfo } from '../../Utils/onActionHandlers/handleBadClickInfo';
 
 export interface Props {
   setMsFromStart: React.Dispatch<React.SetStateAction<number>>;
@@ -44,7 +45,15 @@ export const Control = (props: Props) => {
           setNapTimerOnOff,
           napTimerOff,
         ]}
-        onClickHandler={handleTakeNap}
+        onClickHandler={
+          timerOn || !napTimerOff
+            ? handleTakeNap
+            : () =>
+                handleBadClickInfo(
+                  notification,
+                  'You must start work day, before take any new nap',
+                )
+        }
       >
         {napTimerOff ? 'TAKE A NAP' : 'RESUME WORK'}
       </ControlCenterBtn>
@@ -74,9 +83,17 @@ export const Control = (props: Props) => {
       <ControlCenterBtn
         firstColumn={12}
         firstRow={10}
-        color="#05396e"
+        color={timerOn ? '#05396e' : '#7393B3'}
         onClickParams={[nav]}
-        onClickHandler={handleStartTask}
+        onClickHandler={
+          timerOn
+            ? handleStartTask
+            : () =>
+                handleBadClickInfo(
+                  notification,
+                  'You must start work day, before open any new task',
+                )
+        }
       >
         START TASK
       </ControlCenterBtn>
