@@ -11,7 +11,7 @@ export const TopBarContainer = styled(StyledDivContainer)`
   border-bottom-right-radius: 10px;
   box-shadow: 2px 2px 10px #333333;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   box-sizing: border-box;
   justify-content: flex-start;
   height: ${(props: Props) => (props.menuOn ? '90vh' : '8vh')};
@@ -21,6 +21,7 @@ export const TopBarContainer = styled(StyledDivContainer)`
   left: 0;
   z-index: 100;
   overflow: hidden;
+  padding-bottom: 10%;
 `;
 
 interface ITopBarHidden {
@@ -31,4 +32,7 @@ export const TopBarHidden = styled(StyledDivContainer)`
   display: ${(props: ITopBarHidden) =>
     props.display === 'none' ? 'flex' : 'none'};
   align-items: flex-end;
+  justify-content: flex-end;
+  flex-direction: column;
+  width: 80%;
 `;

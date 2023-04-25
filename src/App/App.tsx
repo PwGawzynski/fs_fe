@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import React, { useMemo, useState } from 'react';
+import { SerializedTaskResponse } from 'types';
 import { Notification } from '../AtomicComponents/Pages/Notification';
 import { Desktop } from '../AtomicComponents/Pages/Desktop';
 import { Register } from '../AtomicComponents/Pages/Register';
@@ -10,6 +11,13 @@ import {
 import { Login } from '../AtomicComponents/Pages/Login';
 import { AuthProvider } from '../Utils/Hooks/authHook';
 import { ProtectedResources } from '../AtomicComponents/Layouts/ProtectedResources';
+import { TasksList } from '../AtomicComponents/Pages/TasksList';
+import {
+  DesktopSettingsContext,
+  DesktopSettingsContextElementsI,
+  DesktopSettingsContextI,
+} from '../ContextFactories/DesktopSettingsContext';
+import { OwnerProtectedResources } from '../AtomicComponents/Layouts/OwnerProtectedResources';
 
 export const App = () => {
   const [notification, setNotification] = useState({
@@ -23,21 +31,78 @@ export const App = () => {
       setNotification,
     };
   }, [notification, setNotification]);
+
+  const [desktopSettings, setDesktopSettings] = useState({
+    OperationCenterHeight: '65vh',
+    bgPhotoShowed: true,
+    reloadFlag: false,
+  } as DesktopSettingsContextElementsI);
+
+  const settingsMemo = useMemo(
+    () =>
+      ({
+        settings: desktopSettings,
+        setDesktopSettings,
+      } as DesktopSettingsContextI),
+    [desktopSettings, setDesktopSettings],
+  );
+  const [openTask, setOpenTask] = useState(
+    {} as SerializedTaskResponse | undefined,
+  );
   return (
     <BrowserRouter>
       <AuthProvider>
         <NotificationsContext.Provider value={notificationMemo}>
-          <Routes>
-            <Route path="/protected" element={<ProtectedResources />}>
-              <Route path="desktop" element={<Desktop />} />
-            </Route>
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-          <Notification
-            display={notification.display}
-            message={notification.message}
-          />
+          <DesktopSettingsContext.Provider value={settingsMemo}>
+            <Routes>
+              <Route path="/protected" element={<ProtectedResources />}>
+                <Route
+                  path="desktop"
+                  element={
+                    <Desktop
+                      currenOpenTask={openTask}
+                      setCurrentTask={setOpenTask}
+                    />
+                  }
+                />
+                <Route
+                  path="today-tasks"
+                  element={
+                    <TasksList
+                      setCurrentTask={setOpenTask}
+                      currenOpenTask={openTask}
+                    />
+                  }
+                />
+                <Route path="owner" element={<OwnerProtectedResources />}>
+                  <Route
+                    path="desktop"
+                    element={
+                      <Desktop
+                        currenOpenTask={openTask}
+                        setCurrentTask={setOpenTask}
+                      />
+                    }
+                  />
+                  <Route
+                    path="today-tasks"
+                    element={
+                      <TasksList
+                        setCurrentTask={setOpenTask}
+                        currenOpenTask={openTask}
+                      />
+                    }
+                  />
+                </Route>
+              </Route>
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+            <Notification
+              display={notification.display}
+              message={notification.message}
+            />
+          </DesktopSettingsContext.Provider>
         </NotificationsContext.Provider>
       </AuthProvider>
     </BrowserRouter>

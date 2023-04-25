@@ -2,10 +2,18 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHourglass, faClock } from '@fortawesome/free-regular-svg-icons';
 import { faTractor } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect } from 'react';
+import {
+  CountedNapsTimeRes,
+  GetCurrentlyOpenWorkDayRes,
+  UniversalResponseObject,
+} from 'types';
 import { StatisticTextContainer } from '../Atoms/StyledContainers';
+import { Api } from '../../Utils/Api/Api';
+import { Timer } from './Timer';
 
 const P = styled.p`
-  font-family: Roboto;
+  font-family: Roboto, serif;
   color: #05396e;
   margin: 0;
   padding: 0;
@@ -31,14 +39,60 @@ const IconContainer = styled(OneLineContainer)`
   justify-content: flex-start;
 `;
 
-export const UserWorkInfo = () => {
+async function handleDataAsk(
+  setWorkDayData: React.Dispatch<React.SetStateAction<number>>,
+  setMsNapFromStart: React.Dispatch<React.SetStateAction<number>>,
+  setTimerOnOff: React.Dispatch<React.SetStateAction<boolean>>,
+) {
+  const data = (await Api.getCurrentlyOpenWorkDay()) as UniversalResponseObject;
+  const napData = (await Api.getAllCountedNapTime()) as UniversalResponseObject;
+  if (!data.status) setTimerOnOff(false);
+  // tu
+  else {
+    const givenTime = new Date(
+      (data.data as GetCurrentlyOpenWorkDayRes).startDate,
+    ).getTime();
+    const doneTime = (new Date().getTime() - givenTime) / 1000;
+    if (napData?.data)
+      setMsNapFromStart(
+        (napData.data as CountedNapsTimeRes).allCountedNapsTime / 1000,
+      );
+    setWorkDayData(doneTime);
+  }
+}
+
+export interface Props {
+  msFromStart: number;
+  msNapFromStart: number;
+  setMsFromStart: React.Dispatch<React.SetStateAction<number>>;
+  setMsNapFromStart: React.Dispatch<React.SetStateAction<number>>;
+  setTimerOnOff: React.Dispatch<React.SetStateAction<boolean>>;
+  timerOn: boolean;
+  napTimerOff: boolean;
+}
+
+export const UserWorkInfo = (props: Props) => {
+  const {
+    msFromStart,
+    setMsFromStart,
+    timerOn,
+    setTimerOnOff,
+    setMsNapFromStart,
+    msNapFromStart,
+    napTimerOff,
+  } = props;
+  useEffect(() => {
+    (async () => {
+      await handleDataAsk(setMsFromStart, setMsNapFromStart, setTimerOnOff);
+    })();
+  }, [setMsFromStart, timerOn, setTimerOnOff, setMsNapFromStart, napTimerOff]);
   return (
     <StatisticTextContainer>
       <OneLineContainer>
         <IconContainer>
           <FontAwesomeIcon icon={faHourglass} color="#05396e" />
         </IconContainer>
-        <P>00:00:12 s</P>
+        <Timer initMs={msFromStart} on={timerOn} />
       </OneLineContainer>
       <OneLineContainer>
         <IconContainer>
@@ -50,7 +104,8 @@ export const UserWorkInfo = () => {
         <IconContainer>
           <FontAwesomeIcon icon={faClock} color="#05396e" />
         </IconContainer>
-        <P>12:32:14 s</P>
+        {/* here all counted nap time */}
+        <Timer initMs={msNapFromStart} on={!napTimerOff} />
       </OneLineContainer>
       <OneLineContainer>
         <IconContainer>

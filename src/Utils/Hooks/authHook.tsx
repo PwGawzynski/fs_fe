@@ -27,8 +27,8 @@ export const AuthProvider = ({ children }: Pros) => {
     [navigate, setUser],
   );
 
-  // call this function to sign out logged in user
-  const setLogoutILS = useCallback(() => {
+  // call this function to sign out logged-in user
+  const setLogoutLS = useCallback(() => {
     setUser(null);
     navigate('/', { replace: true });
   }, [navigate, setUser]);
@@ -37,9 +37,9 @@ export const AuthProvider = ({ children }: Pros) => {
     () => ({
       user,
       setLoginInLS,
-      setLogoutILS,
+      setLogoutILS: setLogoutLS,
     }),
-    [setLoginInLS, setLogoutILS, user],
+    [setLoginInLS, setLogoutLS, user],
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

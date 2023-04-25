@@ -1,5 +1,5 @@
 import { LoginUserAsk, UserRolesObj } from 'types';
-import { FormEvent, useContext, useState } from 'react';
+import React, { FormEvent, useContext, useState } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { FormTemplate } from '../Atoms/FormTemplate';
 import { ReusableInput } from '../Molecules/ReusableInput';
@@ -44,9 +44,9 @@ export const LoginForm = () => {
 
   return (
     <FormTemplate
-      onSubmit={(e) =>
-        handleOnSubmit(e, notification, formData, nav, setLoginInLS)
-      }
+      onSubmit={async (e) => {
+        await handleOnSubmit(e, notification, formData, nav, setLoginInLS);
+      }}
     >
       <FormLabel>Login</FormLabel>
       <ReusableInput

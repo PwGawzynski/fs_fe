@@ -9,7 +9,7 @@ import { useAuth } from '../../Utils/Hooks/authHook';
 
 const handleSession = async (
   notificationContext: NotificationContextObj,
-  setSession: React.Dispatch<React.SetStateAction<boolean>>,
+  setPrivileges: React.Dispatch<React.SetStateAction<boolean>>,
   nav: NavigateFunction,
   user: any,
 ) => {
@@ -19,16 +19,24 @@ const handleSession = async (
       message: 'Your session expired, please login again',
     });
     nav('./../login');
-  } else setSession(true);
+  } else if (user.owner) setPrivileges(true);
+  else {
+    notificationContext.setNotification({
+      display: true,
+      message: 'You do not own privileges to perform this action',
+    });
+    nav('./../../login');
+  }
 };
 
-export const ProtectedResources = () => {
+export const OwnerProtectedResources = () => {
   const notificationContext = useContext(NotificationsContext);
-  const [session, setSession] = useState(false);
+  const [privileges, setPrivileges] = useState(false);
   const nav = useNavigate();
   const { user } = useAuth();
   useEffect(() => {
-    (async () => handleSession(notificationContext, setSession, nav, user))();
-  }, [session, notificationContext, nav, user]);
-  return session ? <Outlet /> : <div />;
+    (async () =>
+      handleSession(notificationContext, setPrivileges, nav, user))();
+  }, [privileges, notificationContext, nav, user]);
+  return privileges ? <Outlet /> : <div />;
 };

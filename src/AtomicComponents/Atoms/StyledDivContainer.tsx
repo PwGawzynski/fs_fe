@@ -8,6 +8,7 @@ interface Props {
   alignItems?: 'flex-start' | 'flex-end' | 'center';
   justifyContent?: 'flex-start' | 'flex-end' | 'center';
   margin?: string;
+  bgColor?: string;
 }
 
 export const StyledDivContainer = styled.div`
@@ -18,4 +19,5 @@ export const StyledDivContainer = styled.div`
   flex-direction: ${(props: Props) => props.flexDirection};
   align-items: ${(props: Props) => props.alignItems || 'center'};
   justify-content: ${(props: Props) => props.justifyContent || 'center'};
+  background-color: ${(props: Props) => props.bgColor || ''};
 `;

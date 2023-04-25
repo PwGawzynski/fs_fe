@@ -1,23 +1,12 @@
 import { ResponsivePie } from '@nivo/pie';
 import { linearGradientDef } from '@nivo/core';
 import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import { DailyTaskStats } from 'types';
+import { Api } from '../../Utils/Api/Api';
+import { LoadingSpinner } from '../Atoms/LoadingSpinner';
 
 // TODO connect with BE
-
-const data = [
-  {
-    id: 'Done',
-    label: 'DONE TASKS',
-    value: 56,
-    color: 'hsl(47, 70%, 50%)',
-  },
-  {
-    id: 'TODO',
-    label: 'TASK TO DO',
-    value: 80,
-    color: 'hsl(0,93%,47%)',
-  },
-];
 
 const Container = styled.div`
   grid-row: 13 / span 7;
@@ -45,11 +34,45 @@ const CountOnCentreMask = styled.div`
   }
 `;
 
+const handleFetch = async (
+  setStats: React.Dispatch<React.SetStateAction<DailyTaskStats>>,
+) => {
+  const res = await Api.getAllTaskWorkerStats();
+  if (res) setStats(res);
+};
+
 export const DoneAreaPieChart = () => {
+  const [stats, setStats] = useState({
+    done: 0,
+    undone: 0,
+  } as DailyTaskStats);
+
+  useEffect(() => {
+    (async () => handleFetch(setStats))();
+  }, []);
+
+  const data = [
+    {
+      id: 'Done',
+      label: 'DONE TASKS',
+      value: stats.done,
+      color: 'hsl(47, 70%, 50%)',
+    },
+    {
+      id: 'TODO',
+      label: 'TASK TO DO',
+      value: stats.undone,
+      color: 'hsl(0,93%,47%)',
+    },
+  ];
   return (
     <Container>
       <CountOnCentreMask>
-        <h1>56/80</h1>
+        {stats ? (
+          <h1>{`${stats.done}/${stats.undone + stats.done}`}</h1>
+        ) : (
+          <LoadingSpinner width="20%" />
+        )}
       </CountOnCentreMask>
       <ResponsivePie
         margin={{ left: 10, right: 10 }}

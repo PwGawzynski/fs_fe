@@ -4,17 +4,20 @@ import { Button } from '../Atoms/Button';
 import { NotificationsContext } from '../../ContextFactories/NotificationsContext';
 
 export const NotificationsButtonLabel = () => {
-  const { setNotification } = useContext(NotificationsContext);
+  const { setNotification, notification } = useContext(NotificationsContext);
   return (
     <StyledDivContainer height="20%" flexDirection="row">
       <Button
         width="90%"
         margin="10%"
-        onClick={() =>
+        onClick={() => {
+          if (notification.onClickAction) {
+            notification.onClickAction();
+          }
           setNotification((prev) => {
-            return { ...prev, display: false };
-          })
-        }
+            return { ...prev, display: false, onClickAction: undefined };
+          });
+        }}
       >
         Accept
       </Button>

@@ -1,5 +1,10 @@
-import axios, { AxiosError } from 'axios';
-import { ICreateUserAsk, LoginUserAsk, UniversalResponseObject } from 'types';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import {
+  DailyTaskStats,
+  ICreateUserAsk,
+  LoginUserAsk,
+  UniversalResponseObject,
+} from 'types';
 
 export class Api {
   // axios main class instance
@@ -63,6 +68,138 @@ export class Api {
     } catch (e) {
       // in case of bad data given or server failure it convert error to  URO( UniversalResponseObject )
       return Api.validateError(e);
+    }
+  }
+
+  static async checkSession(): Promise<boolean> {
+    try {
+      const res = (await Api.axiosInstance.get(
+        '/auth/check-session',
+      )) as AxiosResponse;
+      return res.status === 200;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static async getDailyWorkerStats(): Promise<DailyTaskStats | undefined> {
+    try {
+      const res = (await Api.axiosInstance.get(
+        '/statistic/worker/daily-done-task',
+      )) as AxiosResponse;
+      return (res.data as UniversalResponseObject).data as DailyTaskStats;
+    } catch (e) {
+      return undefined;
+    }
+  }
+
+  static async getCurrentlyOpenWorkDay(): Promise<UniversalResponseObject> {
+    try {
+      const res = (await Api.axiosInstance.get(
+        '/work-day/worker',
+      )) as AxiosResponse;
+      return res.data as UniversalResponseObject;
+    } catch (e) {
+      return { status: false } as UniversalResponseObject;
+    }
+  }
+
+  static async getAllCountedNapTime(): Promise<UniversalResponseObject> {
+    try {
+      const res = (await Api.axiosInstance.get(
+        '/nap/worker/allTimeInMs',
+      )) as AxiosResponse;
+      return res.data as UniversalResponseObject;
+    } catch (e) {
+      return { status: false } as UniversalResponseObject;
+    }
+  }
+
+  static async getAllTasks(): Promise<UniversalResponseObject> {
+    try {
+      const res = (await Api.axiosInstance.get(
+        '/task/undone-for-date/worker',
+      )) as AxiosResponse;
+      return res.data as UniversalResponseObject;
+    } catch (e) {
+      return { status: false } as UniversalResponseObject;
+    }
+  }
+
+  static async openNewWorkDay(): Promise<UniversalResponseObject> {
+    try {
+      const res = (await Api.axiosInstance.post(
+        '/work-day/worker',
+      )) as AxiosResponse;
+      return res.data as UniversalResponseObject;
+    } catch (e) {
+      return { status: false } as UniversalResponseObject;
+    }
+  }
+
+  static async startTask(taskId: string): Promise<UniversalResponseObject> {
+    try {
+      const res = (await Api.axiosInstance.post('/task/start/worker', {
+        taskId,
+      })) as AxiosResponse;
+      return res.data as UniversalResponseObject;
+    } catch (e) {
+      return { status: false } as UniversalResponseObject;
+    }
+  }
+
+  static async endTask(taskId: string): Promise<UniversalResponseObject> {
+    try {
+      const res = (await Api.axiosInstance.post('/task/end/worker', {
+        taskId,
+      })) as AxiosResponse;
+      return res.data as UniversalResponseObject;
+    } catch (e) {
+      return { status: false } as UniversalResponseObject;
+    }
+  }
+
+  static async closeCurrentWorkDay(): Promise<UniversalResponseObject> {
+    try {
+      const res = (await Api.axiosInstance.put(
+        '/work-day/worker/close',
+      )) as AxiosResponse;
+      return res.data as UniversalResponseObject;
+    } catch (e) {
+      return { status: false } as UniversalResponseObject;
+    }
+  }
+
+  static async takeNap(): Promise<UniversalResponseObject> {
+    try {
+      const res = (await Api.axiosInstance.post(
+        '/nap/worker',
+      )) as AxiosResponse;
+      return res.data as UniversalResponseObject;
+    } catch (e) {
+      return { status: false } as UniversalResponseObject;
+    }
+  }
+
+  static async endNap(): Promise<UniversalResponseObject> {
+    try {
+      const res = (await Api.axiosInstance.put(
+        '/nap/worker/close',
+      )) as AxiosResponse;
+      return res.data as UniversalResponseObject;
+    } catch (e) {
+      return { status: false } as UniversalResponseObject;
+    }
+  }
+
+  static async getAllTaskWorkerStats(): Promise<DailyTaskStats | undefined> {
+    try {
+      const res = (await Api.axiosInstance.get(
+        '/statistic/worker/all-done-task',
+      )) as AxiosResponse;
+      return (res.data as UniversalResponseObject).data as DailyTaskStats;
+    } catch (e) {
+      return undefined;
     }
   }
 
